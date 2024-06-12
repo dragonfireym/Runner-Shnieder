@@ -1,0 +1,9 @@
+1----(Tree-switch-mdb-greenbarrier-barrier-car)
+2----(xbarrier-upbarrier)
+3----(cone)
+4----(coin)
+5----(flag)
+
+
+theme egypt
+22----(obstacles)
