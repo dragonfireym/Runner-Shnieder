@@ -8,9 +8,9 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    [SerializeField] GameObject TransparentScreen, QuestionScreen, EndScreen, PauseScreen, MenuScreen, NameScreen, LeaderboardScreen;
+    [SerializeField] GameObject TransparentScreen, QuestionScreen, EndScreen, PauseScreen, MenuScreen, NameScreen, LeaderboardScreen, mutePause, muteMenu;
     [SerializeField] TMP_Text rank, score, textOfNameInput;
-    [SerializeField] TMP_InputField NameInput;
+    [SerializeField] TMP_InputField NameInput, emailInput, numberInput;
     [SerializeField] PlayfabManager manager;
     [SerializeField] GameObject boardHolder;
 
@@ -19,6 +19,23 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        if(AudioListener.volume == 0){
+            if(mutePause != null){
+                mutePause.SetActive(true);
+            }
+            if(muteMenu != null){
+                muteMenu.SetActive(true);
+            }
+        }
+        else{
+            if(mutePause != null){
+                mutePause.SetActive(false);
+            }
+            if(muteMenu != null){
+                muteMenu.SetActive(false);
+            }            
+        }
+
         
         
     }
@@ -75,6 +92,12 @@ public class GameManager : MonoBehaviour
     public static TMP_InputField GetNameInput(){
         return Instance.NameInput;
     }
+    public static TMP_InputField GetEmail(){
+        return Instance.emailInput;
+    }
+    public static TMP_InputField GetNumber(){
+        return Instance.numberInput;
+    }    
 
     public void GoLeaderboard(){
         
@@ -114,6 +137,25 @@ public class GameManager : MonoBehaviour
         Instance.manager.GetLeaderboard2();
 
         
+    }
+
+    public void Mute(){
+        AudioListener.volume =  0;
+        if(mutePause != null){
+            mutePause.SetActive(true);
+        }
+        else if(muteMenu != null){
+            muteMenu.SetActive(true);
+        }
+    }
+    public void Unmute(){
+        AudioListener.volume =  1;
+        if(mutePause != null){
+            mutePause.SetActive(false);
+        }
+        else if(muteMenu != null){
+            muteMenu.SetActive(false);
+        }
     }
 
      void ResetLeaderBoard(){

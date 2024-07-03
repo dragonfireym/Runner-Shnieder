@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField] private InputManager inputs = null;
     [SerializeField] Animator playerAnimation;
     [SerializeField] GameObject scooter;
+    [SerializeField] AudioClip coinSound, powerSound;
    
     Vector3 realGravity = Physics.gravity;
    
@@ -183,12 +184,6 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(transform.position.x ,transform.position.y,other.transform.position.z - 1f);
 
         }
-        else if(other.gameObject.CompareTag("Coin1") ){
-            // score+=1;
-            // scoreText.text = "Score: " + score.ToString();
-            ScoreManager.UpdateScore(1);
-            Destroy(other.gameObject);
-        }
         else if (other.gameObject.CompareTag("Power")){
             
             playerAnimation.SetBool("Power", true);
@@ -197,21 +192,25 @@ public class Player : MonoBehaviour
             Powers.powerTimer = true;
             Powers.powerDuration = 10f;
             Destroy(other.transform.parent.gameObject);
+            AudioSource.PlayClipAtPoint(powerSound, other.transform.position);
         }
         else if (other.gameObject.CompareTag("Giga")){
             ScoreManager.UpdateScore(10);
             ScoreManager.UpdatePowerScore('g');
             Destroy(other.transform.parent.gameObject);
+            AudioSource.PlayClipAtPoint(coinSound, other.transform.position);
         }
         else if (other.gameObject.CompareTag("Deca")){
             ScoreManager.UpdateScore(5);
             Destroy(other.transform.parent.gameObject);
             ScoreManager.UpdatePowerScore('d');
+            AudioSource.PlayClipAtPoint(coinSound, other.transform.position);
         }        
         else if (other.gameObject.CompareTag("Easy")){
             ScoreManager.UpdateScore(1);
             Destroy(other.transform.parent.gameObject);
             ScoreManager.UpdatePowerScore('e');
+            AudioSource.PlayClipAtPoint(coinSound, other.transform.position);
         }
 
 

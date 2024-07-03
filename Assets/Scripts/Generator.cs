@@ -76,11 +76,11 @@ public class Generator : MonoBehaviour
                 limit = 4;
                 level = 4;
             }
-            else if (playerTransform.position.z >= 1000){
+            else if (playerTransform.position.z >= 2000){
                 limit = 3;
                 level = 3;
             }
-            else if(playerTransform.position.z >= 400 ){
+            else if(playerTransform.position.z >= 1000 ){
                 limit = 2;
                 level = 2;
             }

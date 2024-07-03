@@ -10,9 +10,9 @@ public class SidesGenerator : MonoBehaviour
     [SerializeField] List<GameObject> buildingsLeft2,buildingsRight2 ;
     [SerializeField] List<GameObject> buildingsLeft3, buildingsRight3;
     [SerializeField] List<GameObject> buildingsLeft4, buildingsRight4;
-    [SerializeField] List<GameObject> extraSides, extraSides2;
+    [SerializeField] List<GameObject> extraSides, extraSides2 , flags;
 
-    [SerializeField] GameObject flag;
+
 
 
     // [SerializeField] Generator gen;
@@ -74,13 +74,10 @@ public class SidesGenerator : MonoBehaviour
                 }
                 else if(lev == 2){
                     lastZLeft = zChecker;
-                    // GenerateSides(1, buildingsLeft4, buildingsRight4, null, null,factorZLvl3 );
                 }
                 else if(lev == 3){
-                    // if(Generator.Planes[latestIndex].name.Contains("Bridge")){
-                    //     lastZLeft = zChecker;
-                    // }
-                    // else{
+
+                        GameObject flag = flags[Random.Range(0, flags.Count)];
                         GenerateSides(1, buildingsLeft, buildingsRight,extraSides, flag, factorZLvl2);
                     // }
                     
@@ -90,7 +87,7 @@ public class SidesGenerator : MonoBehaviour
                 }
             }
 
-//2.5   1.2   3
+
 
             if(lastZRight <zChecker -factorZ){
                 if (lev == 4){
@@ -99,16 +96,11 @@ public class SidesGenerator : MonoBehaviour
                 }
                 else if(lev == 2){
                     lastZRight = zChecker;
-
-                    // GenerateSides(2, buildingsLeft4, buildingsRight4, null, null,factorZLvl3 );
                 }
                 else if(lev == 3){
-                    //     if(Generator.Planes[latestIndex].name.Contains("Bridge")){
-                    //     lastZRight = zChecker;
-                    // }
-                    // else{
+                        GameObject flag = flags[Random.Range(0, flags.Count)];
                         GenerateSides(2, buildingsLeft, buildingsRight,extraSides, flag,factorZLvl2);
-                    // }
+
                 }
                 else if (lev == 1){
                     GenerateSides(2, buildingsLeft3, buildingsRight3, null, null, factorZLvl1);
@@ -124,6 +116,7 @@ public class SidesGenerator : MonoBehaviour
         // 3 4 building >> tree
         //  3 4 tree >> flag
         // factoz 3
+        
         float y = -0.5f;
         int sel = -1;
         GameObject temp, temp2;

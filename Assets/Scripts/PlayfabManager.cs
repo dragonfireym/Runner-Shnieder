@@ -127,10 +127,12 @@ public class PlayfabManager : MonoBehaviour
     }
 
     public void SubmitNameButton(){
-        if(GameManager.GetNameInput().text.Length < 1){
-            Debug.Log("Put your name");
+
+        CheckDisplayName(GameManager.GetNameInput().text);
+        if(!Validate()){
             return;
         }
+        SaveInfo(GameManager.GetEmail().text, GameManager.GetNumber().text);
         var request = new UpdateUserTitleDisplayNameRequest{
             DisplayName = GameManager.GetNameInput().text
         };
@@ -142,9 +144,47 @@ public class PlayfabManager : MonoBehaviour
         Debug.Log("Successfully updated name");
         GameManager.ShowMenuScreen();
     }
-    void GenerateRandomName(){
-
+    void CheckDisplayName(string displayName)
+    {
+        var request = new GetAccountInfoRequest { TitleDisplayName = displayName };
+        PlayFabClientAPI.GetAccountInfo(request, OnGetAccountInfoSuccess, OnGetAccountInfoFailure);
     }
+
+    void OnGetAccountInfoSuccess(GetAccountInfoResult result)
+    {
+        // Display name exists
+        Debug.Log("Display name already exists.");
+    }
+
+    private void OnGetAccountInfoFailure(PlayFabError error){
+         if (error.Error == PlayFabErrorCode.AccountNotFound)
+        {
+            Debug.Log("Display name is available.");
+        }
+        else
+        {
+            // Handle other possible errors
+            Debug.LogError("Error occurred: " + error.GenerateErrorReport());
+        }
+    }
+    bool Validate(){
+        if(GameManager.GetNameInput().text.Length < 1){
+            Debug.Log("Put your name");
+            return false;
+        }
+        string temp = GameManager.GetEmail().text;
+        if( (temp.Length< 1 )|| (!temp.Contains("@")) ){
+            return false;
+        }
+        temp = GameManager.GetNumber().text;
+        int i;
+        if((temp.Length< 11 || temp.Length > 11 )|| (!int.TryParse(temp, out i))){
+            Debug.Log("Put your number correctly, " + temp.Length + ": Invalid Length");
+            return false;
+        }
+        return true;
+    }
+
 
     public void GetYourRankAndScore(ref TMP_Text r , ref TMP_Text s ){
         r.text = rank;
@@ -152,5 +192,20 @@ public class PlayfabManager : MonoBehaviour
 
         Debug.Log("The id is "+ rank +" and main id is "+ score);
         
+    }
+
+
+    void SaveInfo(string email, string number){
+        var request = new UpdateUserDataRequest{
+            Data = new Dictionary<string,string>{
+                {"Email", email},
+                {"Number",number}
+            }
+        };
+        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnError);
+    }
+
+    void OnDataSend(UpdateUserDataResult request){
+        Debug.Log("Successfully sent");
     }
 }
